@@ -13,7 +13,7 @@ public:
     int val;
     Node* next;
     Node* random;
-    
+
     Node(int _val) {
         val = _val;
         next = NULL;
@@ -21,16 +21,34 @@ public:
     }
 };
 */
+// 一个哈希表 + 两次遍历。
 
-class Solution {
-public:
-    Node* copyRandomList(Node* head) {
-        
+#include <cstddef>
+#include <unordered_map>
+class Solution
+{
+  public:
+    Node *copyRandomList(Node *head)
+    {
+        unordered_map<Node *, Node *> mp;
+        auto p = head;
+        while (p != nullptr)
+        {
+            auto copy = new Node(p->val);
+            mp[p] = copy;
+            p = p->next;
+        }
+        p = head;
+        while (p != nullptr)
+        {
+            mp[p]->next = mp[p->next];
+            mp[p]->random = mp[p->random];
+            p = p->next;
+        }
+        return mp[head];
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -46,4 +64,3 @@ public:
 // @lcpr case=end
 
  */
-

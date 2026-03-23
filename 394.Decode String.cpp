@@ -6,52 +6,97 @@
  */
 
 // @lc code=start
-#include <cctype>
+#include <iostream>
 #include <stack>
 #include <string>
+#include <utility>
 class Solution
 {
   public:
-    std::string decodeString(std::string s)
+    // 标准写法，还是很绕，反正记住就行了
+    string decodeString(string s)
     {
-        std::stack<int> counts;
-        std::stack<std::string> prefixes;
-        std::string cur;
-        int num = 0;
+        stack<string> strSt;
+        stack<int> countSt;
+        int count = 0;
+        string str;
 
-        for (char ch : s)
+        for (auto &ch : s)
         {
-            if (std::isdigit(static_cast<unsigned char>(ch)))
+            if (ch <= '9' && ch >= '0')
             {
-                num = num * 10 + (ch - '0');
+
+                count = count * 10 + ch - '0';
             }
             else if (ch == '[')
             {
-                counts.push(num);
-                prefixes.push(cur);
-                num = 0;
-                cur.clear();
+                //
+                strSt.push(str);
+                str.clear();
+                //
+                countSt.push(count);
+                count = 0;
             }
             else if (ch == ']')
             {
-                int repeat = counts.top();
-                counts.pop();
-
-                std::string decoded = prefixes.top();
-                prefixes.pop();
-                while (repeat--)
+                auto curCount = countSt.top();
+                countSt.pop();
+                string prevStr = strSt.top();
+                strSt.pop();
+                for (int i = 0; i < curCount; i++)
                 {
-                    decoded += cur;
+                    prevStr += str;
                 }
-                cur = decoded;
+                str = prevStr;
             }
             else
             {
-                cur += ch;
+                str.push_back(ch);
             }
         }
+        return str;
+    }
 
-        return cur;
+    // 非常糙的递归写法，细节太多，不推荐深挖
+    string decodeString_old(string s)
+    {
+        auto recur = [&](auto &self, int start) -> pair<string, int> {
+            // string timesStr;
+            string res;
+            int endIndx = 0;
+            for (int i = start; i < s.size(); i++)
+            {
+                int times = 0;
+                if (s[i] <= '9' && s[i] >= '0')
+                {
+
+                    while (s[i] <= '9' && s[i] >= '0')
+                    {
+
+                        times = times * 10 + s[i] - '0';
+                        i++;
+                    }
+                    auto [str, end] = self(self, i + 1); // 跳过那个括号
+                    i = end;                             // 注意循环自动加一
+                    for (int j = 0; j < times; j++)
+                    {
+                        res += str;
+                    }
+                }
+                else if (s[i] == ']')
+                {
+                    endIndx = i;
+                    break;
+                }
+                else
+                {
+                    res += s[i];
+                }
+            }
+            return {res, endIndx};
+        };
+        auto [str, end] = recur(recur, 0);
+        return str;
     }
 };
 // @lc code=end
