@@ -12,13 +12,46 @@
 class Solution
 {
   public:
+    vector<int> sortArray(vector<int> &nums)
+    {
+        auto heapify = [&](auto &self, int n, int i) -> void {
+            int largest = i;
+            int l = 2 * i + 1;
+            int r = 2 * i + 2;
+
+            if (l < n && nums[l] > nums[largest])
+                largest = l;
+            if (r < n && nums[r] > nums[largest])
+                largest = r;
+
+            if (largest != i)
+            {
+                swap(nums[i], nums[largest]);
+                self(self, n, largest);
+            }
+        };
+
+        int n = nums.size();
+
+        for (int i = n / 2 - 1; i >= 0; i--)
+        {
+            heapify(heapify, n, i);
+        }
+
+        for (int i = n - 1; i > 0; i--)
+        {
+            swap(nums[0], nums[i]);
+            heapify(heapify, i, 0);
+        }
+
+        return nums;
+    }
 
     // 三指针才能突破重复元素很多的情况
     // 但是要特别注意区间边界的问题
 
-    
     // 暂时性实现了一个比较糙的快排
-    vector<int> sortArray(vector<int> &nums)
+    vector<int> sortArray_quick(vector<int> &nums)
     {
         srand(time(0));
         auto partition = [&](int left, int right) {
@@ -40,8 +73,6 @@ class Solution
             return j;
         };
 
-
-
         auto partition3 = [&](int l, int r) -> pair<int, int> {
             // nums[left .. lt-1] < pivot
             // nums[lt .. gt] == pivot
@@ -57,9 +88,9 @@ class Solution
             // nums[lt+1 .. i-1] == pivot
             // nums[i .. gt] unknown
             // nums[gt+1 .. right] > pivot
-            int lt = l;    
-            int gt = r;    
-            int i = l + 1; 
+            int lt = l;
+            int gt = r;
+            int i = l + 1;
 
             while (i <= gt) //
             {
@@ -96,7 +127,7 @@ class Solution
             // 三路的  重复元素多的情况下就快
             auto [lt, gt] = partition3(left, right);
             self(self, left, lt - 1);
-            self(self, gt+1, right);
+            self(self, gt + 1, right);
         };
         qsort(qsort, 0, nums.size() - 1);
         return nums;

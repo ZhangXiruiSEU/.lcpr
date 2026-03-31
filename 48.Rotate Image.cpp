@@ -9,6 +9,25 @@
 class Solution {
 public:
     void rotate(vector<vector<int>>& matrix) {
+        auto m = matrix.size();
+        auto n = matrix[0].size();
+        // 先对角线翻转
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                swap(matrix[i][j],matrix[j][i]);
+            }
+        }
+        // 再每行翻转
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n/2; j++)
+            {
+                swap(matrix[i][j],matrix[i][n-1-j]);
+            }
+        }
+        
         
     }
 };
