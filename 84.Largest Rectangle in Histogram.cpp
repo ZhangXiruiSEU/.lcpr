@@ -6,15 +6,22 @@
  */
 
 // @lc code=start
-class Solution {
-public:
-    int largestRectangleArea(vector<int>& heights) {
-        
+#include <stack>
+class Solution
+{
+  public:
+    int largestRectangleArea(vector<int> &heights)
+    {
+        stack<int> st;
+        heights.push_back(0);
+        int res{0};
+        for (int i = 0; i < heights.size(); i++)
+        {
+            while (st.empty() &&)
+        }
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -26,4 +33,3 @@ public:
 // @lcpr case=end
 
  */
-

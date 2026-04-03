@@ -6,15 +6,41 @@
  */
 
 // @lc code=start
-class Solution {
-public:
-    int findMin(vector<int>& nums) {
+class Solution
+{
+  public:
+  // 这个题边界情况很鸡儿多
+    int findMin(vector<int> &nums)
+    {
         
+        int left = 0, right = nums.size();
+        if (nums[left]<=nums[right-1]) {
+            return nums[left];
+        }
+
+        while (left < right)
+        {
+            int mid = left + (right - left) / 2;
+            // 在断崖右边
+            // if (nums[mid] <= nums.back()){
+            //     right = mid;
+                
+            // }
+            // else {
+            //     left = mid +1;
+            // }
+            if (nums[mid] >= nums.front()){
+                left = mid +1;
+            }
+            else {
+                right = mid;
+            }
+        }
+        return nums[left];
+
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -30,4 +56,3 @@ public:
 // @lcpr case=end
 
  */
-

@@ -4,7 +4,7 @@
  *
  * [496] Next Greater Element I
  */
-#include "lc.h"
+
 // @lc code=start
 class Solution
 {
@@ -38,7 +38,6 @@ class Solution
         }
         return res;
     }
-
 };
 // @lc code=end
 
