@@ -23,23 +23,39 @@ class Solution
   public:
     ListNode *mergeKLists(vector<ListNode *> &lists)
     {
-		ListNode dummy;
-		auto p =&dummy;
-        function<bool(ListNode *, ListNode *)> cmp = [](ListNode *a, ListNode *b) { return a->val > b->val; };
-        priority_queue<ListNode *, vector<ListNode *>, decltype(cmp)> pq(cmp);
-		for (auto head:lists){
-			if (head!=nullptr){
-				pq.push(head);
-			}
-		}
-		while (!pq.empty()){
-			auto node = pq.top();
-			pq.pop();
-			p->next = node;
-			if (node ->next!=nullptr) pq.push(node->next);
-			p = p->next;
-		}
-		return dummy.next;
+        ListNode dummy;
+        auto p = &dummy;
+
+        struct cmp
+        {
+            bool operator()(ListNode *a, ListNode *b)
+            {
+                return a->val > b->val;
+            }
+        };
+
+        // 传大于号 其实是小顶堆
+        priority_queue<ListNode *, vector<ListNode *>, cmp> pq;
+
+        // 把当前的每个节点的头的值都压入
+        for (auto head : lists)
+        {
+            if (head != nullptr)
+            {
+                pq.push(head);
+            }
+        }
+        // 还不为空的时候
+        while (!pq.empty())
+        {
+            auto node = pq.top();//取出
+            pq.pop();//pop
+            p->next = node;//链接
+            if (node->next != nullptr)//如果链接的节点后面还有就把后面的压入
+                pq.push(node->next);
+            p = p->next;
+        }
+        return dummy.next;
     }
 };
 // @lc code=end

@@ -7,25 +7,29 @@
 #include "lc.h"
 
 // @lc code=start
-class Solution {
-public:
-    int removeElement(vector<int>& nums, int val) {
-        int fast=0;
+class Solution
+{
+  public:
+    int removeElement(vector<int> &nums, int val)
+    {
+        int fast = 0;
         int slow = 0;
-        while (fast<nums.size()){
-            if (nums[fast]!=val){
+    
+        while (fast < nums.size())
+        {
+            // slow 指向要改的地方，（除了开始的时候）要删除的元素
+            // fast 去探测后面的到底是不是我要删的 如果不是，我就把他写会 slow 的位置
+            if (nums[fast] != val)
+            {
                 nums[slow] = nums[fast];
-                slow ++;
+                slow++;
             }
-            fast ++;
-            
+            fast++;
         }
         return slow;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -37,4 +41,3 @@ public:
 // @lcpr case=end
 
  */
-

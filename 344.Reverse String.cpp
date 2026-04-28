@@ -4,15 +4,18 @@
  *
  * [344] Reverse String
  */
-#include <vector> 
+#include <vector>
 using std::vector;
 // @lc code=start
-class Solution {
-public:
-    void reverseString(vector<char>& s) {
+class Solution
+{
+  public:
+    void reverseString(vector<char> &s)
+    {
         int left = 0;
-        int right =s.size()-1;
-        while (left< right){
+        int right = s.size() - 1;
+        while (left < right)
+        {
             auto temp = s[left];
             s[left] = s[right];
             s[right] = temp;
@@ -22,8 +25,6 @@ public:
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -35,4 +36,3 @@ public:
 // @lcpr case=end
 
  */
-

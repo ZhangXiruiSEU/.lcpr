@@ -4,26 +4,28 @@
  *
  * [5] Longest Palindromic Substring
  */
-#include <string>
 #include <algorithm>
+#include <string>
 using std::string, std::max;
 
 // @lc code=start
 class Solution
 {
-public:
+  public:
     string longestPalindrome(string s)
     {
         string ret = "";
         for (int i = 0; i < s.size(); i++)
         {
+            //可能是奇数偶数
             string s_odd = palindrome(s, i, i);
             string s_even = palindrome(s, i, i + 1);
-            ret = std::max({s_odd, s_even, ret},
-                           [](const string &x, const string &y)
-                           {
-                               return x.size() < y.size();
-                           });
+            struct cmp{
+                bool operator()(string x,string y){
+                    return x.size()<y.size();
+                }
+            };
+            ret = std::max({s_odd, s_even, ret}, cmp());
         }
         return ret;
     }

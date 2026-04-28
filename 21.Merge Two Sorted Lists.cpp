@@ -18,28 +18,28 @@
  */
 class Solution
 {
-public:
-	ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
-	{
-		ListNode dummy;
-		auto p = &dummy;
-		while (list1 != nullptr && list2 != nullptr)
-		{
-			if (list1->val < list2->val)
-			{
-				p->next = list1;
-				list1 = list1->next;
-			}
-			else
-			{
-				p->next = list2;
-				list2 = list2->next;
-			}
-			p = p->next;
-		}
-		p->next = (list1 != nullptr) ? list1 : list2;
-		return dummy.next;
-	}
+  public:
+    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
+    {
+        ListNode dummy;
+        auto p = &dummy;
+        while (list1 != nullptr && list2 != nullptr)
+        {
+            if (list1->val < list2->val)
+            {
+                p->next = list1;
+                list1 = list1->next;
+            }
+            else
+            {
+                p->next = list2;
+                list2 = list2->next;
+            }
+            p = p->next;
+        }
+        p->next = (list1 != nullptr) ? list1 : list2;
+        return dummy.next;
+    }
 };
 // @lc code=end
 
