@@ -12,9 +12,7 @@ class Solution
   public:
     int subarraySum(vector<int> &nums, int k)
     {
-        // 
         int sum = 0;
-        // int target = sum - k;
         int res = 0;
         unordered_map<int, int> mp;
 

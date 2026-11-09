@@ -7,40 +7,49 @@
 #include "lc.h"
 #include <functional>
 // @lc code=start
-class Solution {
-public:
-    vector<vector<string>> solveNQueens(int n) {
+class Solution
+{
+  public:
+    vector<vector<string>> solveNQueens(int n)
+    {
         vector<vector<string>> result;
-        vector<string> board(n,string(n,'.'));
-        //vector<bool> rows(n,false);
-        vector<bool> existCols(n,false);
-        
-        auto isValid = [&](int r, int c){
-            if (existCols[c]) return false;
-            for (int i = r-1, j = c-1; i>=0 && j>=0 ;i--,j--){
-                if (board[i][j] == 'Q') return false;
+        vector<string> board(n, string(n, '.'));
+        // vector<bool> rows(n,false);
+        vector<bool> existCols(n, false);
+
+        auto isValid = [&](int r, int c) {
+            if (existCols[c])
+                return false;
+            for (int i = r - 1, j = c - 1; i >= 0 && j >= 0; i--, j--)
+            {
+                if (board[i][j] == 'Q')
+                    return false;
             }
-            for (int i = r-1, j = c+1; i>=0 && j<n ;i--,j++){
-                if (board[i][j] == 'Q') return false;
+            for (int i = r - 1, j = c + 1; i >= 0 && j < n; i--, j++)
+            {
+                if (board[i][j] == 'Q')
+                    return false;
             }
 
             return true;
         };
 
-        function<void(int)> recur = [&](int rowIndx){
-            if (rowIndx == n) {
+        function<void(int)> recur = [&](int rowIndx) {
+            if (rowIndx == n)
+            {
                 result.push_back(board);
                 return;
             }
-            for (int j = 0;j<n;j++){
-                if(isValid(rowIndx,j)){
+            for (int j = 0; j < n; j++)
+            {
+                if (isValid(rowIndx, j))
+                {
                     board[rowIndx][j] = 'Q';
                     existCols[j] = true;
-                    recur(rowIndx+1);
+                    recur(rowIndx + 1);
                     board[rowIndx][j] = '.';
                     existCols[j] = false;
                 }
-                
             }
         };
         recur(0);
@@ -48,8 +57,6 @@ public:
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -61,4 +68,3 @@ public:
 // @lcpr case=end
 
  */
-

@@ -5,6 +5,8 @@
  * [25] Reverse Nodes in k-Group
  */
 #include "lc.h"
+#include <chrono>
+#include <cstddef>
 // @lc code=start
 /**
  * Definition for singly-linked list.
@@ -16,54 +18,50 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
-public:
-  ListNode *reverseKGroup(ListNode *head, int k) {
+class Solution
+{
+  public:
+    ListNode *reverseN(ListNode *head, int n)
+    {
+        if (head==nullptr||head->next == nullptr)
+            return head;
+        auto p = head;
+        int i  = n-1;
+        while (i > 0 && p != nullptr)
+        {
+            p = p->next;
+            i--;
+        }
+        if (p == nullptr)
+            return head;
+        ListNode *pre, *cur, *nxt;
+        pre = nullptr;
+        cur = head;
+        nxt = head->next;
+        i=n;
+        while (i>0)
+        {
+            cur->next = pre;
+            pre = cur;
+            cur = nxt;
+            if (nxt != nullptr)
+            {
+                nxt = nxt->next;
+            }
+            i--;
+        }
+        head->next = reverseN(cur, n);
 
-    auto dummy = new ListNode;
-    dummy->next = head;
-    auto p = dummy;
-    int length = -1;
-    while (p != nullptr) {
-      p = p->next;
-      length++;
+        return pre;
     }
-    int runtimes = length / k;
+    ListNode *reverseKGroup(ListNode *head, int k)
+    {
 
-    auto run = [&](int left, int right) {
-      p = dummy;
-      auto l = left;
-      while (l - 1 > 0) {
-        l--;
-        p = p->next;
-      } // eg left =2 ,then move once
-      auto leftp = p->next;
-      if (leftp == nullptr || leftp->next == nullptr || right - left == 0)
-        return;
-
-      int n = right - left + 1;
-      ListNode *pre = nullptr;
-      auto cur = leftp;
-      auto nxt = leftp->next;
-      while (n > 0) {
-        n--;
-        cur->next = pre;
-        pre = cur;
-        cur = nxt;
-        if (nxt != nullptr)
-          nxt = nxt->next;
-      }
-      p->next->next = cur;
-      p->next = pre;
-    };
-
-    for (int i = 0; i < runtimes; i++) {
-      run(1 + i * k, k + i * k);
+        // auto dummy = new ListNode;
+        // dummy->next = head;
+        // auto p = dummy;
+        return reverseN(head, k);
     }
-
-    return dummy->next;
-  }
-  auto rev(ListNode *head, int k) { return; }
 };
 // @lc code=end
 

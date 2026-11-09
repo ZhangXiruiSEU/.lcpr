@@ -15,32 +15,24 @@ class Solution
     vector<vector<string>> groupAnagrams(vector<string> &strs)
     {
         // 字符串到数组的哈希表
-        unordered_map<string, vector<int>> map;
+        unordered_map<string, vector<string>> map;
 
-        //给所有字符串编码，符合条件的字符串会变成一样的字符串
-        for (int i = 0; i < strs.size(); i++)
+        // 给所有字符串编码，符合条件的字符串会变成一样的字符串
+        for (auto &str : strs)
         {
-            string encoder(26,0);
-            for (auto &l : strs[i])
+            string encoder(26, 0);
+            for (auto &ch : str)
             {
-                encoder[l - 'a'] ++;
+                encoder[ch - 'a']++;
             }
-            // 把每个编码的字符串序号都找到
-            map[encoder].push_back(i);
+            map[encoder].push_back(str);
         }
-        //再根据哈希表输出结果就行了
-        vector<vector<string>> res;
-        for (auto &pair : map)
+        vector<vector<string>> ans;
+        for (auto kv : map)
         {
-            vector<string> resTemp;
-            for (auto &indx : pair.second)
-            {
-                resTemp.push_back(strs[indx]);
-            }
-
-            res.push_back(resTemp);
+            ans.push_back(kv.second);
         }
-        return res;
+        return ans;
     }
 };
 // @lc code=end

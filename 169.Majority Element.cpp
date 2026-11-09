@@ -6,22 +6,24 @@
  */
 #include "lc.h"
 // @lc code=start
-class Solution {
-public:
-    int majorityElement(vector<int>& nums) {
-        //非常巧妙
+class Solution
+{
+  public:
+    int majorityElement(vector<int> &nums)
+    {
+        // 非常巧妙
         int target = 0;
         int count = 0;
-        for (int& n:nums){
-            if (count==0) target=n;
-            count+= n==target?1:-1;
+        for (int &n : nums)
+        {
+            if (count == 0)
+                target = n;
+            count += n == target ? 1 : -1;
         }
         return target;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -33,4 +35,3 @@ public:
 // @lcpr case=end
 
  */
-

@@ -7,28 +7,36 @@
 #include "lc.h"
 #include <vector>
 // @lc code=start
-class Solution {
-public:
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(),intervals.end());
-        vector<vector<int>> result = {intervals[0]};
-        
-        for (auto& interval:intervals){
-            if (interval.front()>result.back().back()){
-                result.emplace_back(interval);
-                
+class Solution
+{
+  public:
+    vector<vector<int>> merge(vector<vector<int>> &intervals)
+    {
+        sort(intervals.begin(), intervals.end());
+        vector<vector<int>> result;
+
+        for (auto &interval : intervals)
+        {
+            if (result.empty())
+            {
+                result.push_back(interval);
+                continue;
             }
-            
-            else if (interval.back()>result.back().back()){
-                result.back().back() = interval.back();
+            auto &last_res = result.back();
+            if (last_res[1] < interval[0])
+            {
+                result.push_back(interval);
+            }
+
+            else
+            {
+                last_res[1] = interval[1];
             }
         }
         return result;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -44,4 +52,3 @@ public:
 // @lcpr case=end
 
  */
-

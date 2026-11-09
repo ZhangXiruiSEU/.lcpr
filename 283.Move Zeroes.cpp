@@ -14,12 +14,26 @@ class Solution
     void moveZeroes(vector<int> &nums)
     {
         int fast = 0, slow = 0;
+        while (fast < nums.size())
+        {
+            if (nums[fast] != 0)
+            {
+                swap(nums[slow], nums[fast]);
+                slow++;
+            }
+            fast++;
+        }
+    }
+
+    void moveZeroes_(vector<int> &nums)
+    {
+        int fast = 0, slow = 0;
         // 快慢指针
         // 指向待处理的位置
         while (fast < nums.size())
         {
             // 如果快指针不为零，直接把慢指针的值变成快指针的值
-            //相当于把所有不为零的值挪到前面去
+            // 相当于把所有不为零的值挪到前面去
             if (nums[fast] != 0)
             {
                 nums[slow] = nums[fast];
@@ -29,7 +43,7 @@ class Solution
             // 快指针一直走
             fast++;
         }
-        //慢指针之后的全部变成零
+        // 慢指针之后的全部变成零
         while (slow < nums.size())
         {
             nums[slow] = 0;

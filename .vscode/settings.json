@@ -3,5 +3,7 @@
         "algorithm": "cpp",
         "string": "cpp"
     },
+    "accessibility.signals.sounds.enabled": false
     
 }
+

@@ -5,6 +5,7 @@
  * [3] Longest Substring Without Repeating Characters
  */
 #include "lc.h"
+#include <unordered_map>
 #include <unordered_set>
 // @lc code=start
 class Solution
@@ -12,33 +13,20 @@ class Solution
   public:
     int lengthOfLongestSubstring(string s)
     {
-        unordered_set<int> st;
-        int left = 0;
+        unordered_set<int> set;
+        int left = 0, right = 0; // 滑动窗口模板是左闭右开
         int maxLen = 0;
-        int right = 0;
+        // 按模板来 的话 right 就不要 while 里面移动
         while (right < s.size())
         {
-            auto chR = s[right];
-            right++;//right是下一个待操作的位置
-            //如果能插就插
-            if (st.count(chR) == 0)
+            while (set.count(s[right]) == 1)
             {
-                st.insert(chR);
+                set.erase(s[left]);
+                left++;
             }
-            //但是本位置还没有操作，so far
-            else
-            {
-                // 如果说还是进不去，那就左边移动
-                while (st.count(chR) == 1)
-                {
-                    auto chL = s[left];
-                    left++;
-                    st.erase(chL);
-                }
-                //直到可以进去
-                st.insert(chR);// 终于操作了
-            }
-            maxLen = max(maxLen,right-left);
+            set.insert(s[right]);
+            right++;
+            maxLen = max (maxLen,right-left);
         }
         return maxLen;
     }

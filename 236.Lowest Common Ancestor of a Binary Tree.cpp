@@ -17,28 +17,33 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-class Solution {
-public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        
-
-        function<TreeNode*(TreeNode*)> find = [&](TreeNode* root)->TreeNode*{
-            if (root==nullptr) return nullptr;
-            if (root->val==p->val||root->val==q->val) return root;
-
-            auto left = find(root->left);
-            auto right =find(root->right);
-            if (left!=nullptr&&right!=nullptr){
-                return root;
-            }
-            return left!=nullptr?left:right;
-        };
-        return find (root);
+class Solution
+{
+  public:
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+    {
+        return find(root, p, q);
     }
+
+    TreeNode *find(TreeNode *root, TreeNode *p, TreeNode *q)
+    {
+        if (root == nullptr)
+            return nullptr;
+        if (root->val == p->val || root->val == q->val)
+        {
+            return root;
+        }
+        auto left = find(root->left, p, q);
+        auto right = find(root->right, p, q);
+        if (right != nullptr && left != nullptr)
+        {
+            return root;
+        }
+        return left != nullptr ? left : right;
+    }
+
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -54,4 +59,3 @@ public:
 // @lcpr case=end
 
  */
-

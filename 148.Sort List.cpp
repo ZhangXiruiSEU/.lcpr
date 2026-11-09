@@ -77,13 +77,13 @@ class Solution
             // 递归的截止条件
             if (!p || !p->next)
                 return p;
-            //打断 并取后半段的头
+            // 打断 并取后半段的头
             auto last_half_head = break_in_half(p);
 
             // 递归左右两个链表，返回的就是排序好的头节点
             auto left = self(self, p);
             auto right = self(self, last_half_head);
-            //合并就行了
+            // 合并就行了
             return merge(left, right);
         };
 

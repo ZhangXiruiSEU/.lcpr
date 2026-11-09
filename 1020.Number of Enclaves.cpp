@@ -12,7 +12,7 @@ class Solution
     int numEnclaves(vector<vector<int>> &grid)
     {
         // 带返回值的dfs是我自己想的，比较麻烦
-        //正规做法其实还是先沿着边沿去消除
+        // 正规做法其实还是先沿着边沿去消除
 
         int res = 0;
         int m = grid.size();

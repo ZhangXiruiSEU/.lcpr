@@ -22,14 +22,14 @@ class Solution
             }
             vector<int> cur(i + 1); // 第 i+1 行 有 i+1 个值
 
-            for (int j = 0; j < i + 1; j++) 
+            for (int j = 0; j < i + 1; j++)
             {
                 int left, right;
                 if (j == 0)
                     left = 0;
                 else
                     left = res.back()[j - 1];
-                if (j > i-1 )//上一行有 i 个值，j 最多也就 i-1
+                if (j > i - 1) // 上一行有 i 个值，j 最多也就 i-1
                     right = 0;
                 else
                     right = res.back()[j];

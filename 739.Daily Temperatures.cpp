@@ -5,27 +5,33 @@
  * [739] Daily Temperatures
  */
 #include "lc.h"
+#include <stack>
+#include <vector>
 
 // @lc code=start
-class Solution {
-public:
-    vector<int> dailyTemperatures(vector<int>& temperatures) {
-        vector<int> res(temperatures.size());
-        stack<int> s;
-        for (int i = temperatures.size()-1;i>=0;i--){
-            while (!s.empty()&&temperatures[i]>=temperatures[s.top()]){
+class Solution
+{
+  public:
+    vector<int> dailyTemperatures(vector<int> &temperatures)
+    {
+        vector<int> days(temperatures.size());
+        // 记录下一个更高温还有多少天
+        stack<int> s; // 单调栈
+        for (int i = temperatures.size() - 1; i >= 0; i--)
+        {
+            // 如果说目前的温度比之前的高，之前的就 pop了
+            while (!s.empty() && temperatures[i] >= temperatures[s.top()])
+            {
                 s.pop();
-            
             }
-            res[i] = s.empty()?0:s.top()-i;
+
+            days[i] = s.empty()?0:s.top() - i;
             s.push(i);
         }
-        return res;
+        return days;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -41,4 +47,3 @@ public:
 // @lcpr case=end
 
  */
-

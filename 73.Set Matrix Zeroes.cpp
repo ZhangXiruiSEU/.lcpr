@@ -9,8 +9,8 @@
 class Solution
 {
   public:
-  //这个不占用额外空间的方法是很绕的，最好还是画个图来理解
-  // 最直观的方法就是开俩数组，代表行和列要不要 set zero ，但是不满足题目要求
+    // 这个不占用额外空间的方法是很绕的，最好还是画个图来理解
+    //  最直观的方法就是开俩数组，代表行和列要不要 set zero ，但是不满足题目要求
     void setZeroes(vector<vector<int>> &matrix)
     {
         auto m = matrix.size();

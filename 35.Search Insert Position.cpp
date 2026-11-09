@@ -18,17 +18,13 @@ class Solution
         while (left < right)
         {
             int mid = left + (right - left) / 2;
-            if (nums[mid] == target)
+            if (nums[mid] >= target)
             {
                 right = mid;
             }
-            else if (nums[mid] < target)
+            else 
             {
                 left = mid + 1;
-            }
-            else
-            {
-                right = mid;
             }
         }
         return left;

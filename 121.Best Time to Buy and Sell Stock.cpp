@@ -6,6 +6,7 @@
  */
 
 // @lc code=start
+#include <climits>
 #include <vector>
 class Solution
 {
@@ -13,6 +14,20 @@ class Solution
     // 所谓股票购买问题
     // 去看教程里面的通用思路
     int maxProfit(vector<int> &prices)
+    {
+        vector<vector<int>> dp(prices.size() + 1, vector<int>(2));
+
+        dp[0][0] = 0;
+        dp[0][1] = INT_MIN;
+
+        for (int i = 1; i <= prices.size(); i++)
+        {
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1]);
+            dp[i][1] = max(dp[i - 1][1],  - prices[i - 1]);
+        }
+        return dp[prices.size()][0];
+    }
+    int maxProfit_(vector<int> &prices)
     {
         vector memo(prices.size(), vector(2, vector<int>(2, -1)));
         auto dp = [&](auto &self, int i, int k, int hold) {

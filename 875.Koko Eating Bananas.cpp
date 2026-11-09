@@ -6,37 +6,41 @@
  */
 #include "lc.h"
 // @lc code=start
-class Solution {
-public:
-    int minEatingSpeed(vector<int>& piles, int h) {
+class Solution
+{
+  public:
+    int minEatingSpeed(vector<int> &piles, int h)
+    {
         // k bigger, h smaller,
-        // we need min k so we use left bound 
-        int left =1 ;
-        auto right = int(1e9+1);
-        while (left<right){
-            int mid =left+ (right -left )/2;
-            if (f(mid,piles)<= h){
+        // we need min k so we use left bound
+        int left = 1;
+        auto right = int(1e9 + 1);
+        while (left < right)
+        {
+            int mid = left + (right - left) / 2;
+            if (f(mid, piles) <= h)
+            {
                 right = mid;
             }
-            else {
-                left = mid +1;
+            else
+            {
+                left = mid + 1;
             }
-            
         }
         return right;
     }
-    long f(int k,vector<int>& piles){
-        long res=0;
-        for (auto& p:piles){
-            res += p/k;
-            res += p%k==0?0:1;
+    long f(int k, vector<int> &piles)
+    {
+        long res = 0;
+        for (auto &p : piles)
+        {
+            res += p / k;
+            res += p % k == 0 ? 0 : 1;
         }
         return res;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -52,4 +56,3 @@ public:
 // @lcpr case=end
 
  */
-

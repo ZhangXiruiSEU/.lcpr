@@ -21,14 +21,6 @@ class Solution
         while (left < right)
         {
             int mid = left + (right - left) / 2;
-            // 在断崖右边
-            // if (nums[mid] <= nums.back()){
-            //     right = mid;
-                
-            // }
-            // else {
-            //     left = mid +1;
-            // }
             if (nums[mid] >= nums.front()){
                 left = mid +1;
             }
@@ -36,7 +28,7 @@ class Solution
                 right = mid;
             }
         }
-        return nums[left];
+        return nums[right];
 
     }
 };

@@ -18,7 +18,7 @@ class Solution
         vector<string> res;
         int leftnum = n;
         int rightnum = n;
-        auto backtracking = [&](auto &self) {
+        auto backtrack = [&](auto &self) {
             if (leftnum > rightnum)
             {
                 return;
@@ -46,11 +46,11 @@ class Solution
                 rightnum++;
             }
         };
-        backtracking(backtracking);
+        backtrack(backtrack);
         return res;
     }
 
-    //dp写法比回溯难想的多，现在也没写对，没必要深究了
+    // dp写法比回溯难想的多，现在也没写对，没必要深究了
     vector<string> generateParenthesis_dp(int n)
     {
         vector<vector<string>> memo(9, vector<string>(0));
@@ -62,7 +62,7 @@ class Solution
 
             if (!memo[i].empty())
                 return memo[i];
-            
+
             for (auto &str : self(self, i - 1))
             {
                 memo[i].push_back(str + "()");
@@ -70,7 +70,7 @@ class Solution
             }
             return memo[i];
         };
-        return dp(dp,n);
+        return dp(dp, n);
     }
 };
 // @lc code=end

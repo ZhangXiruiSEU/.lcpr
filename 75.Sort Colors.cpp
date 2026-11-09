@@ -6,37 +6,38 @@
  */
 #include "lc.h"
 // @lc code=start
-class Solution {
-public:
-    void sortColors(vector<int>& nums) {
-        auto myswap = [&](int indx1, int indx2){
-            int temp = nums[indx1];
-            nums[indx1] =  nums[indx2];
-             nums[indx2] =  temp;
-        };
-        int p0=0;//左闭右开 0-p0
-        int i=0; //p0-i 是 1
-        int p2=nums.size(); //p2 到 size是 2
-        while (i<p2){
-            if( nums[i] == 0) {
-                p0 ++;                
-                myswap(i,p0-1);
+class Solution
+{
+  public:
+    void sortColors(vector<int> &nums)
+    {
+        int p0 = -1;
+        int p1 = nums.size();
+        // we take close interval here
+        int i = 0;
+        int mid = 1;
+        while (i < p1)
+        {
+            if (nums[i] > mid)
+            {
+                p1--;
+                swap(nums[i], nums[p1]);
+            }
+            else if (nums[i] < mid)
+            {
+                p0++;
+                swap(nums[i], nums[p0]);
                 i++;
             }
-
-            else if( nums[i] == 2) {
-                p2--;
-                myswap(i,p2);               
+            else
+            {
+                i++;
             }
-            else i++;
-
         }
-        return;
+        
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -48,4 +49,3 @@ public:
 // @lcpr case=end
 
  */
-

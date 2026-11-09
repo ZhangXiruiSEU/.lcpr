@@ -12,62 +12,64 @@ class Solution
   public:
     vector<vector<int>> fourSum(vector<int> &nums, int target)
     {
-        auto twoSum = [&](int start, long target) -> vector<vector<int>> {
-            int left = start;
-            int right = nums.size() - 1;
-            vector<vector<int>> res;
-            while (left < right)
-            {
-                long sum = nums[left] + nums[right];
-                int leftVal = nums[left], rightVal = nums[right];
-                if (sum < target)
-                {
-                    left++;
-                }
-                else if (sum > target)
-                {
-                    right--;
-                }
-                else
-                {
-                    res.push_back({nums[left], nums[right]});
-                    while (left < right && leftVal == nums[left])
-                        left++;
-                    while (left < right && rightVal == nums[right])
-                        right--;
-                }
-            }
-            return res;
-        };
         std::sort(nums.begin(), nums.end());
-        function<vector<vector<int>>(int, int, long)> nSum = [&](int n, int start, long target) -> vector<vector<int>> {
+
+        auto Nsum = [&](auto &&self, int n, int start, int target) -> vector<vector<int>> {
             if (n == 2)
-                return twoSum(start, target);
-            else
             {
-                vector<vector<int>> resn;
+                auto left = start;
+                int right = nums.size() - 1;
+                vector<vector<int>> res2;
+                while (left < right)
+                {
+                    auto temSum = nums[left] + nums[right];
+                    if (temSum > target)
+                    {
+                        do
+                            right--;
+                        while (left < right && nums[right] == nums[right + 1]);
+                    }
+                    else if (temSum < target)
+                    {
+                        do
+                            left++;
+                        while (left < right && nums[left] == nums[left - 1]);
+                    }
+                    else
+                    {
+                        res2.push_back({nums[left], nums[right]});
+                        do
+                            right--;
+                        while (left < right && nums[right] == nums[right + 1]);
+                        do
+                            left++;
+                        while (left < right && nums[left] == nums[left - 1]);
+                    }
+                }
+                return res2;
+            }
+            else if (n > 2)
+            {
+                vector<vector<int>> resN;
                 for (int i = start; i < nums.size(); i++)
                 {
-                    if ((long long)n * nums[i] > target)
-                        break;
-                    if ((long long)nums[i] + (long long)(n - 1) * nums[nums.size() - 1] < target)
-                        continue;
                     if (i > start && nums[i] == nums[i - 1])
-                    {
                         continue;
-                    }
-                    auto res = nSum(n - 1, i + 1, target - nums[i]);
-                    for (auto &r : res)
+                    vector<vector<int>> resN_1 = self(self, n - 1, i + 1, target - nums[i]);
+                    for (auto &res : resN_1)
                     {
-                        r.push_back(nums[i]);
-                        resn.push_back(r);
+                        res.push_back(nums[i]);
+                        resN.push_back(res);
                     }
                 }
-                return resn;
+                return resN;
+            }
+            else
+            {
+                throw;
             }
         };
-
-        return nSum(4, 0, target);
+        return Nsum(Nsum, 4, 0, target);
     }
 };
 // @lc code=end

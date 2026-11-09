@@ -8,25 +8,29 @@
 #include <cstddef>
 #include <string>
 // @lc code=start
-class Solution {
-public:
-    bool isAnagram(string s, string t) {
-        if (s.size()!=t.size())return false;
+class Solution
+{
+  public:
+    bool isAnagram(string s, string t)
+    {
+        if (s.size() != t.size())
+            return false;
         size_t n = s.size();
-        auto encode = [&](string s){
-            wstring ws(26,0);
-            for (auto & ch :s){
-                ws[ch-'a']++;
+        auto encode = [&](string s) {
+            wstring ws(26, 0);
+            for (auto &ch : s)
+            {
+                ws[ch - 'a']++;
             }
             return ws;
         };
-        if (encode(s)==encode(t)) return true;
-        else return false;
+        if (encode(s) == encode(t))
+            return true;
+        else
+            return false;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -38,4 +42,3 @@ public:
 // @lcpr case=end
 
  */
-

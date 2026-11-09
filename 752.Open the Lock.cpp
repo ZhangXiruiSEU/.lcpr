@@ -18,10 +18,11 @@ class Solution
             dead.insert(s);
         }
         queue<string> q;
-        if (dead.count(string("0000"))) return -1;
+        if (dead.count(string("0000")))
+            return -1;
         q.push(string("0000"));
         visited.insert(string("0000"));
-        
+
         int step = 0;
         auto plus1 = [=](string s, int indx) {
             s[indx] = s[indx] - '0' + 1 > 9 ? 0 + '0' : s[indx] + 1;
@@ -50,7 +51,7 @@ class Solution
                 q.pop();
                 if (cur == target)
                     return step;
-                
+
                 for (auto &s : move(cur))
                 {
                     if (!visited.count(s) && !dead.count(s))

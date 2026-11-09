@@ -4,48 +4,54 @@
  *
  * [1011] Capacity To Ship Packages Within D Days
  */
-#include "lc.h" 
+#include "lc.h"
 
 // @lc code=start
 
-class Solution {
-public:
-    int shipWithinDays(vector<int>& weights, int days) {
-        int left=0;
-        int right=1;
-        for (auto  w : weights){
-            left = max(left,w);
+class Solution
+{
+  public:
+    int shipWithinDays(vector<int> &weights, int days)
+    {
+        int left = 0;
+        int right = 1;
+        for (auto w : weights)
+        {
+            left = max(left, w);
             right += w;
         }
-        while (left<right){
-            int mid = left + (right-left)/2;
-            if (get_days(weights,mid)<=days){
+        while (left < right)
+        {
+            int mid = left + (right - left) / 2;
+            if (get_days(weights, mid) <= days)
+            {
                 right = mid;
             }
-            else {
-                left = mid +1;
+            else
+            {
+                left = mid + 1;
             }
         }
         return left;
     }
-    int get_days(vector<int>& weights,int cap){
-        int bef=0,aft=0;
+    int get_days(vector<int> &weights, int cap)
+    {
+        int bef = 0, aft = 0;
         int days = 0;
-        for (auto  w : weights){
+        for (auto w : weights)
+        {
             aft += w;
-            if (aft > cap) {
-                days ++;
+            if (aft > cap)
+            {
+                days++;
                 aft = w;
             }
-
         }
         days++;
         return days;
-    } 
+    }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -61,4 +67,3 @@ public:
 // @lcpr case=end
 
  */
-

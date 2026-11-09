@@ -6,40 +6,64 @@
  */
 #include <algorithm>
 #include <string>
+#include <vector>
 using std::string, std::max;
 
 // @lc code=start
 class Solution
 {
   public:
+    string longestPalindrome_dp(string s)
+    {
+        // dp[i][j] 区间是否是回文串 定义是双闭区间吧
+        // dp[i][j] = dp[i+1][j-1] && dp[i]==dp[j]
+        int maxlen = 1;
+        int indx_left = 0;
+        vector<vector<bool>> dp(s.size(), vector<bool>(s.size()));
+        for (int i = 0; i < s.size(); i++)
+        {
+            dp[i][i] = true;
+        }
+        for (int i = s.size() - 1; i >= 0; i--)
+        {
+            for (int j = i + 1; j < s.size(); j++)
+            {
+                if (i + 1 <= j - 1)
+                    dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j]);
+                else
+                    dp[i][j] = (s[i] == s[j]);
+                if (dp[i][j])
+                {
+                    if (j - i + 1 > maxlen)
+                    {
+                        maxlen = j - i + 1;
+                        indx_left = i;
+                    }
+                }
+            }
+        }
+        return s.substr(indx_left, maxlen);
+    }
     string longestPalindrome(string s)
     {
         string ret = "";
+        auto palindrome = [&](int left, int right) {
+            while (left >= 0 && right < (int)s.size() && s[left] == s[right])
+            {
+                left--;
+                right++;
+            }
+            return s.substr(left + 1, right - 1 - left);
+        };
+        auto cmp = [](string x, string y) { return x.size() < y.size(); };
         for (int i = 0; i < s.size(); i++)
         {
-            //可能是奇数偶数
-            string s_odd = palindrome(s, i, i);
-            string s_even = palindrome(s, i, i + 1);
-            struct cmp{
-                bool operator()(string x,string y){
-                    return x.size()<y.size();
-                }
-            };
-            ret = std::max({s_odd, s_even, ret}, cmp());
+            // 可能是奇数偶数
+            string s_odd = palindrome(i, i);
+            string s_even = palindrome(i, i + 1);
+            ret = std::max({s_odd, s_even, ret}, cmp);
         }
         return ret;
-    }
-    std::string palindrome(std::string s, int l, int r)
-    {
-        // 防止索引越界
-        while (l >= 0 && r < s.length() && s[l] == s[r])
-        {
-            // 双指针，向两边展开
-            l--;
-            r++;
-        }
-        // 此时 s[l+1..r-1] 就是最长回文串
-        return s.substr(l + 1, r - l - 1);
     }
 };
 // @lc code=end

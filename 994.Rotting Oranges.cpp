@@ -7,12 +7,68 @@
 #include "lc.h"
 #include <cstddef>
 #include <queue>
+#include <utility>
 #include <vector>
 // @lc code=start
 class Solution
 {
   public:
     int orangesRotting(vector<vector<int>> &grid)
+    {
+        auto m = grid.size();
+        auto n = grid[0].size();
+        queue<vector<int>> q;
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (grid[i][j] == 2)
+                {
+                    q.push({i, j});
+                }
+            }
+        }
+        vector<vector<int>> dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        auto step = 0;
+        while (!q.empty())
+        {
+
+            auto size = q.size();
+            for (int i = 0; i < size; i++)
+            {
+                auto front = q.front();
+                q.pop();
+                for (auto &dir : dirs)
+                {
+                    auto nxtX = front[0] + dir[0];
+                    auto nxtY = front[1] + dir[1];
+                    if (nxtX >= m || nxtX < 0 || nxtY >= n || nxtY < 0)
+                    {
+                        continue;
+                    }
+                    if (grid[nxtX][nxtY] == 1)
+                    {
+                        q.push({nxtX, nxtY});
+                        grid[nxtX][nxtY] = 2;
+                    }
+                }
+            }
+            step++;
+        }
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (grid[i][j] == 1)
+                {
+                    return -1;
+                }
+            }
+        }
+        return step == 0 ? 0 : step - 1;
+    }
+
+    int orangesRotting_(vector<vector<int>> &grid)
     {
         // 标准 bfs
         queue<vector<int>> q;
@@ -63,7 +119,7 @@ class Solution
                 }
             }
         }
-        return step==0?0:step-1;
+        return step == 0 ? 0 : step - 1;
     }
 };
 // @lc code=end

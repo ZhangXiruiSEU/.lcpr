@@ -6,40 +6,43 @@
  */
 
 // @lc code=start
-#include <climits>
-#include <iterator>
-#include <queue>
-class MinStack {
+
+class MinStack
+{
     // 这是我自己想的方法
-    // 实际上可以不用 minVal 变量更简洁
-    
-public:
+    // 实际上可以不用 minVal
+
+  public:
     stack<int> st;
-    stack<int> aux;
-    int minVal=INT_MAX;
-    MinStack() {
-        
+    stack<int> aux_min;
+
+    MinStack()
+    {
     }
-    
-    void push(int val) {
-        minVal = min(minVal,val);
+
+    void push(int val)
+    {
         st.push(val);
-        aux.push(minVal);
+        if (aux_min.empty() || val < aux_min.top())
+            aux_min.push(val);
+        else
+        {
+            aux_min.push(aux_min.top());
+        }
     }
-    
-    void pop() {
+
+    void pop()
+    {
         st.pop();
-        aux.pop();
-        //必须维护这个 minVal
-        minVal =aux.empty()?INT_MAX:aux.top();
+        aux_min.pop();
     }
-    
-    int top() {
+    int top()
+    {
         return st.top();
     }
-    
-    int getMin() {
-        return aux.top();
+    int getMin()
+    {
+        return aux_min.top();
     }
 };
 
@@ -53,12 +56,9 @@ public:
  */
 // @lc code=end
 
-
-
 /*
 // @lcpr case=start
 // ["MinStack","push","push","push","getMin","pop","top","getMin"]\n[[],[-2],[0],[-3],[],[],[],[]]\n
 // @lcpr case=end
 
  */
-

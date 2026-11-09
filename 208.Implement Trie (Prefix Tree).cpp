@@ -10,25 +10,63 @@ using namespace std;
 
 // @lc code=start
 
+class Trie
+{
+    struct TrieNode
+    {
+        std::vector<std::unique_ptr<TrieNode>> children;
+        bool isEnd;
+        TrieNode() : children(26), isEnd(false)
+        {
+        }
+    };
+    std::unique_ptr<TrieNode> root;
 
-class Trie {
+    TrieNode *searchPrefix(const std::string &prefix)
+    {
+        TrieNode *node = root.get();
+        for (char ch : prefix)
+        {
+            int index = ch - 'a';
+            if (node->children[index] == nullptr)
+            {
+                return nullptr;
+            }
+            node = node->children[index].get();
+        }
+        return node;
+    }
 
+  public:
+    Trie() : root(std::make_unique<TrieNode>())
+    {
+    }
 
-public:
-    Trie() {
-        
+    void insert(std::string word)
+    {
+        TrieNode *node = root.get();
+        for (char ch : word)
+        {
+            int index = ch - 'a';
+            if (node->children[index] == nullptr)
+            {
+                // 使用 std::make_unique 创建新节点
+                node->children[index] = std::make_unique<TrieNode>();
+            }
+            node = node->children[index].get();
+        }
+        node->isEnd = true;
     }
-    
-    void insert(string word) {
-        
+
+    bool search(std::string word)
+    {
+        TrieNode *node = searchPrefix(word);
+        return node != nullptr && node->isEnd;
     }
-    
-    bool search(string word) {
-        
-    }
-    
-    bool startsWith(string prefix) {
-        
+
+    bool startsWith(std::string prefix)
+    {
+        return searchPrefix(prefix) != nullptr;
     }
 };
 
@@ -41,12 +79,10 @@ public:
  */
 // @lc code=end
 
-
-
 /*
 // @lcpr case=start
-// ["Trie","insert","search","search","startsWith","insert","search"]\n[[],["apple"],["apple"],["app"],["app"],["app"],["app"]]\n
+//
+["Trie","insert","search","search","startsWith","insert","search"]\n[[],["apple"],["apple"],["app"],["app"],["app"],["app"]]\n
 // @lcpr case=end
 
  */
-

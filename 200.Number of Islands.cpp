@@ -6,6 +6,7 @@
  */
 #include "lc.h"
 #include <functional>
+#include <vector>
 // @lc code=start
 class Solution
 {
@@ -15,28 +16,30 @@ class Solution
         int res = 0;
         int m = grid.size();
         int n = grid[0].size();
-        function<void(int ,int)> dfs = [&](int i, int j) {
-            if (i < 0 || j < 0 || i >= m || j >= n)
+
+        auto dfs = [&](auto &self, int x, int y) {
+            if (x >= m || x < 0 || y >= n || y < 0)
             {
-                // 超出索引边界
                 return;
             }
-            if (grid[i][j]=='0'){
+            if (grid[x][y] == '0')
+            {
                 return;
             }
-            grid[i][j]='0';
-            dfs(i+1,j);
-            dfs(i,j+1);
-            dfs(i-1,j);
-            dfs(i,j-1);
+            grid[x][y] = '0';
+            self(self, x + 1, y);
+            self(self, x - 1, y);
+            self(self, x, y + 1);
+            self(self, x, y - 1);
         };
-        for (int i = 0; i < grid.size(); ++i)
+        for (int i = 0; i < m; i++)
         {
-            for (int j = 0; j < grid[0].size(); ++j)
+            for (int j = 0; j < n; j++)
             {
-                if (grid[i][j]=='1'){
+                if (grid[i][j] == '1')
+                {
                     res++;
-                    dfs(i,j);
+                    dfs(dfs, i, j);
                 }
             }
         }

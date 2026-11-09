@@ -6,6 +6,9 @@
  */
 
 // @lc code=start
+#include <functional>
+#include <queue>
+#include <vector>
 class Solution
 {
   public:
@@ -23,87 +26,74 @@ class Solution
     // 快排就是先随机找一个元素确定他的正确位置
     //  那这个元素如果比目标大，或者小，都需要继续找一侧就行了
     // 但这个区间问题还是要好好搞清楚
+    int findKthLargest_(vector<int> &nums, int k)
+    {
+        priority_queue<int, vector<int>, std::greater<int>> pq; // 小顶堆
+        for (int n : nums)
+        {
+            pq.push(n);
+            if (pq.size() > k)
+            {
+                pq.pop();
+            }
+        }
+        return pq.top();
+    }
+
     int findKthLargest(vector<int> &nums, int k)
     {
-        srand(time(0));
 
         // 两路划分还是会 TLE
-        auto partition = [&](int left, int right) {
-            // randomly choose pivot
-            auto randomIndx = left + rand() % (right - left + 1);
-            swap(nums[left], nums[randomIndx]);
-            auto pivot = nums[left];
-            auto j = left;
-            for (int i = left + 1; i <= right; i++)
-            {
-                if (nums[i] < pivot)
-                {
-                    j++;
-                    swap(nums[i], nums[j]);
-                }
-            }
-            swap(nums[left], nums[j]);
-            return j;
-        };
 
         auto partition3 = [&](int l, int r) -> pair<int, int> {
             // 随机挑一个当 pivot
             auto randomIndx = l + rand() % (r - l + 1);
-            swap(nums[l], nums[randomIndx]);
+            int pivot = nums[randomIndx];
+            int lt = l - 1;
+            int gt = r + 1;
+            int i = l;
 
-            int pivot = nums[l];
-            int lt = l;    // l+1 lt 小于 pivot
-            int gt = r;    // gt  r 大于 pivot
-            int i = l + 1; // lt+1  i-1 等于 pivot
-
-            while (i <= gt) //
+            while (i < gt)
             {
                 if (nums[i] < pivot) // 遇到小的
                 {
-                    // 当前的小于区就是从 lt开始，所以放到 lt+1
-                    swap(nums[i], nums[lt + 1]);
                     lt++; // 小于的区间就增加
-                    i++;  // 继续扫描
+                    swap(nums[i], nums[lt]);
+                    i++; // 继续扫描
                 }
                 else if (nums[i] > pivot)
                 {
-                    // 当前的大于区 r，包括 r，所以直接扔到 r
+                    gt--;
                     swap(nums[i], nums[gt]);
                     // 无需 i++ ，因为扔过来的数字是未知的
-                    gt--;
                 }
                 else
                 {
                     i++;
                 }
             }
-            swap(nums[l], nums[lt]); // 放回正确的地方
             return {lt, gt};
         };
 
         int left = 0;
         int right = nums.size() - 1;
-        int res;
+
         while (1)
         {
-            // 随机确定一个元素的位置
             auto [lt, gt] = partition3(left, right);
-            // 如果在要找的位置后面，再找前面就行了
-            if (nums.size() - k < lt)
+            if (lt+1 > int(nums.size()) - k)
             {
-                right = lt - 1;
+                right = lt;
             }
-            else if (nums.size() - k > gt)
+            else if (gt-1 < int(nums.size()) - k)
             {
-                left = gt + 1;
+                left = gt ;
             }
             else
             {
-                res = nums[lt];
-                break;
+                return nums[lt+1];
             }
         }
-        return res;
     }
 };
 // @lc code=end

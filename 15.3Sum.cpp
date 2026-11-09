@@ -5,6 +5,8 @@
  * [15] 3Sum
  */
 #include "lc.h"
+#include <cassert>
+#include <csignal>
 #include <vector>
 // @lc code=start
 class Solution
@@ -12,52 +14,64 @@ class Solution
   public:
     vector<vector<int>> threeSum(vector<int> &nums)
     {
-
         std::sort(nums.begin(), nums.end());
 
-        auto twoSum = [&](int start, int target) -> vector<vector<int>> {
-            int left = start;
-            int right = nums.size() - 1;
-            vector<vector<int>> res;
-            while (left < right)
+        auto Nsum = [&](auto &&self, int n, int start, int target) -> vector<vector<int>> {
+            if (n == 2)
             {
-                int sum = nums[left] + nums[right];
-                int leftVal = nums[left], rightVal = nums[right];
-                if (sum < target)
+                auto left = start;
+                int right = nums.size() - 1;
+                vector<vector<int>> res2;
+                while (left < right)
                 {
-                    left++;
+                    auto temSum = nums[left] + nums[right];
+                    if (temSum > target)
+                    {
+                        do
+                            right--;
+                        while (left < right && nums[right] == nums[right + 1]);
+                    }
+                    else if (temSum < target)
+                    {
+                        do
+                            left++;
+                        while (left < right && nums[left] == nums[left - 1]);
+                    }
+                    else
+                    {
+                        res2.push_back({nums[left], nums[right]});
+                        do
+                            right--;
+                        while (left < right && nums[right] == nums[right + 1]);
+                        do
+                            left++;
+                        while (left < right && nums[left] == nums[left - 1]);
+                    }
                 }
-                else if (sum > target)
-                {
-                    right--;
-                }
-                else
-                {
-                    res.push_back({nums[left], nums[right]});
-                    while (left < right && leftVal == nums[left])
-                        left++;
-                    while (left < right && rightVal == nums[right])
-                        right--;
-                }
+                return res2;
             }
-            return res;
+            else if (n > 2)
+            {
+                vector<vector<int>> resN;
+                for (int i = start; i < nums.size(); i++)
+                {
+                    if (i > start && nums[i] == nums[i - 1])
+                        continue;
+                    vector<vector<int>> resN_1 = self(self, n - 1, i + 1, target - nums[i]);
+                    for (auto &res : resN_1)
+                    {
+                        res.push_back(nums[i]);
+                        resN.push_back(res);
+                    }
+                }
+                return resN;
+            }
+            else
+            {
+                throw;
+            }
         };
-        int target = 0;
-        vector<vector<int>> res3;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            if (i > 0 && nums[i] == nums[i - 1])
-            {
-                continue;
-            }
-            auto res2 = twoSum(i + 1, target - nums[i]);
-            for (auto &r : res2)
-            {
-                r.push_back(nums[i]);
-                res3.push_back(r);
-            }
-        }
-        return res3;
+        return Nsum(Nsum, 3, 0, 0);
     }
 };
 // @lc code=end

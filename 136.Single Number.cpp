@@ -6,19 +6,20 @@
  */
 #include "lc.h"
 // @lc code=start
-class Solution {
-public:
-    int singleNumber(vector<int>& nums) {
+class Solution
+{
+  public:
+    int singleNumber(vector<int> &nums)
+    {
         int res = 0b0;
-        for (auto& num:nums){
-            res^=num;
+        for (auto &num : nums)
+        {
+            res ^= num;
         }
         return res;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -34,4 +35,3 @@ public:
 // @lcpr case=end
 
  */
-

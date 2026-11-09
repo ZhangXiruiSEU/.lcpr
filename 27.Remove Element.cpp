@@ -14,7 +14,7 @@ class Solution
     {
         int fast = 0;
         int slow = 0;
-    
+
         while (fast < nums.size())
         {
             // slow 指向要改的地方，（除了开始的时候）要删除的元素

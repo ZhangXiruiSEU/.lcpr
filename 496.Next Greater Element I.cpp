@@ -18,15 +18,18 @@ class Solution
         // 2 find the next greater element of nums2
         stack<int> s;
         vector<int> resNGE(nums2.size());
+
         for (int i = nums2.size() - 1; i >= 0; i--)
         {
             while (!s.empty() && nums2[i] > s.top())
             {
                 s.pop();
             }
-            resNGE[i] = s.empty() ? -1 : s.top();
+            resNGE[i] = s.empty()?-1:s.top();
             s.push(nums2[i]);
+            
         }
+
         for (int i = 0; i < nums2.size(); i++)
         {
             mp[nums2[i]] = resNGE[i];

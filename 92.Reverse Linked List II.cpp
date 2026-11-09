@@ -17,71 +17,79 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
-public:
-    ListNode* reverseBetween1(ListNode* head, int left, int right) {
-        auto dummy = new ListNode;
-        dummy->next = head;
-        auto p = dummy;
-        auto l = left;
-        while (l-1>0){
-            l--;
-            p=p->next;
-        }//eg left =2 ,then move once 
-        auto leftp = p->next;
-        if (leftp==nullptr||leftp->next==nullptr||right-left==0) return head;
-        
-        int n  = right - left +1;
-        ListNode* pre = nullptr;
-        auto cur = leftp;
-        auto nxt = leftp->next;
-        while(n>0){
-            n--;
+class Solution
+{
+  public:
+    ListNode *reverseN(ListNode *head, int n)
+    {
+        if (head == nullptr || head->next == nullptr)
+        {
+            return head;
+        }
+        ListNode *pre, *cur, *next;
+        pre = nullptr;
+        cur = head;
+        next = head->next;
+        while (cur != nullptr && n > 0)
+        {
             cur->next = pre;
             pre = cur;
-            cur = nxt;
-            if (nxt!=nullptr)
-            nxt = nxt->next;
-            
+            cur = next;
+            if (next!= nullptr)
+                next = next->next;
+            n--;
         }
-        p->next->next = cur;
-        p->next = pre;
-        return dummy->next;
+        head->next = cur;
+        return pre;
+    }
+    ListNode *reverseBetween(ListNode *head, int left, int right)
+    {
+        if (left == 1)
+            return reverseN(head, right);
+        
+        int i = left - 2;
+        auto p = head;
+        while (i > 0)
+        {
+            p = p->next;
+            i--;
+        }
+        p->next = reverseN(p->next, right - left + 1);
+        return head;
     }
 
-    ListNode* reverseBetween(ListNode* head, int left, int right) {
+    ListNode *reverseBetween_0(ListNode *head, int left, int right)
+    {
         auto dummy = new ListNode;
         dummy->next = head;
         auto p = dummy;
         auto l = left;
-        while (l-1>0){
+        while (l - 1 > 0)
+        {
             l--;
-            p=p->next;
-        }//eg left =2 ,then move once 
+            p = p->next;
+        } // eg left =2 ,then move once
         auto leftp = p->next;
-        if (leftp==nullptr||leftp->next==nullptr||right-left==0) return head;
-        
-        int n  = right - left ;
-        auto pre = p; //反转区间前面的一个
-        auto cur = leftp;//反转区间的第一个
-        //auto nxt = leftp->next;//即将反转的那个
-        while(n>0){
+        if (leftp == nullptr || leftp->next == nullptr || right - left == 0)
+            return head;
+
+        int n = right - left;
+        auto pre = p;     // 反转区间前面的一个
+        auto cur = leftp; // 反转区间的第一个
+        // auto nxt = leftp->next;//即将反转的那个
+        while (n > 0)
+        {
             n--;
-            auto nxt = cur ->next;
-            cur->next = nxt->next;   //把 nxt 从链表中“切掉”，让 cur 连上 nxt 的后面
-            nxt->next = pre->next;// 把 nxt 接到当前反转区间的头部
-            pre->next = nxt; //让 pre 指向新的头部
-            
-            
-            
+            auto nxt = cur->next;
+            cur->next = nxt->next; // 把 nxt 从链表中“切掉”，让 cur 连上 nxt 的后面
+            nxt->next = pre->next; // 把 nxt 接到当前反转区间的头部
+            pre->next = nxt;       // 让 pre 指向新的头部
         }
-        
+
         return dummy->next;
     }
 };
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -93,4 +101,3 @@ public:
 // @lcpr case=end
 
  */
-

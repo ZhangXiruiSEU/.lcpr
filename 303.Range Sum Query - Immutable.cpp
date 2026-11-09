@@ -6,23 +6,23 @@
  */
 #include "lc.h"
 // @lc code=start
-class NumArray {
+class NumArray
+{
     vector<int> presum;
-public:
-    NumArray(vector<int>& nums) {
-        presum.reserve(nums.size()+1);
-        int tempSum = 0;
-        for (int i=0;i<nums.size()+1;i++){
-            presum[i] = tempSum;
-            if(i!=nums.size())
-            tempSum+=nums[i];
-            //this, i-indx means the sum of before i
-            
-        }
+
+  public:
+    NumArray(vector<int> &nums)
+    {
+        presum.resize(nums.size() + 1,0);
         
+        for (int i = 1; i <= nums.size(); i++)
+        {
+            presum[i] = presum[i-1]+nums[i-1];
+        }
     }
-    
-    int sumRange(int left, int right) {
+
+    int sumRange(int left, int right)
+    {
         return presum[right+1]-presum[left];
     }
 };
@@ -34,12 +34,9 @@ public:
  */
 // @lc code=end
 
-
-
 /*
 // @lcpr case=start
 // ["NumArray","sumRange","sumRange","sumRange"]\n[[[-2,0,3,-5,2,-1]],[0,2],[2,5],[0,5]]\n
 // @lcpr case=end
 
  */
-

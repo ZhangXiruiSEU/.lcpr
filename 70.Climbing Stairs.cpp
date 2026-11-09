@@ -6,6 +6,7 @@
  */
 
 // @lc code=start
+#include <vector>
 class Solution
 {
     // 经典 dp，其实就是斐波那契数列，
@@ -13,17 +14,17 @@ class Solution
   public:
     int climbStairs(int n)
     {
-        int i_2 = 1;
-        int i_1 = 1;
-        int res = 1;
+        // dp(n) 表示到第 n 级的方法数量
+        // dp(n) = dp(n-1) + dp(n-2)
 
-        for (int i = 2; i <= n; i++)
-        {
-            res = i_1 + i_2;
-            i_2 = i_1;
-            i_1 = res;
+        vector<int> dp(n+1);
+        dp[1] = 1;
+        dp[0] = 1;
+        for (int i = 2;i<=n;i++){
+            dp[i] = dp[i-1]+dp[i-2];
         }
-        return res;
+        return dp[n];
+
     }
     int climbStairs_recurdp(int n)
     {

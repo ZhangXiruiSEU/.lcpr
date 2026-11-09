@@ -5,6 +5,7 @@
  * [239] Sliding Window Maximum
  */
 #include "lc.h"
+#include <deque>
 // @lc code=start
 class Solution
 {
@@ -37,21 +38,50 @@ class Solution
             }
         }
     };
-    vector<int> maxSlidingWindow(vector<int> &nums, int k)
+    vector<int> maxSlidingWindow_(vector<int> &nums, int k)
     {
         MonotonicQueue window;
         vector<int> res;
-        for (int i = 0; i < nums.size(); i++) {
-            if (i < k - 1) {
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (i < k - 1)
+            {
                 // 先填满窗口的前 k - 1
                 window.push(nums[i]);
-            } else {
+            }
+            else
+            {
                 // 窗口向前滑动，加入新数字
                 window.push(nums[i]);
                 // 记录当前窗口的最大值
                 res.push_back(window.max());
                 // 移出旧数字
                 window.pop(nums[i - k + 1]);
+            }
+        }
+        return res;
+    }
+    vector<int> maxSlidingWindow(vector<int> &nums, int k)
+    {
+        deque<int> dq;
+        vector<int> res;
+        for (int i = 0; i < nums.size(); i++)
+        {
+
+            // 窗口向前滑动，加入新数字
+            while (!dq.empty() && dq.back() < nums[i])
+            {
+                dq.pop_back();
+            }
+            dq.push_back(nums[i]);
+
+            if (i >= k - 1)
+            {
+                // 记录当前窗口的最大值
+                res.push_back(dq.front());
+                // 移出旧数字
+                if (dq.front() == nums[i - k + 1])
+                    dq.pop_front();
             }
         }
         return res;

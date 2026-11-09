@@ -14,34 +14,32 @@ class Solution
     vector<int> twoSum(vector<int> &nums, int target)
     {
         // 2 pointers
-        vector<vector<int>> pair;
+        vector<vector<int>> numWithIndx;
         for (int i = 0; i < nums.size(); i++)
         {
-            pair.push_back({nums[i], i});
+            numWithIndx.push_back({nums[i], i});
         }
 
-        std::sort(pair.begin(), pair.end());
+        std::sort(numWithIndx.begin(), numWithIndx.end());
         int left = 0;
         int right = nums.size() - 1;
-        vector<int> res;
         while (left < right)
         {
-            int sum = pair[left][0] + pair[right][0];
-            if (sum < target)
-            {
-                left++;
-            }
-            else if (sum > target)
+            auto temSum = numWithIndx[left][0] + numWithIndx[right][0];
+            if (temSum > target)
             {
                 right--;
             }
+            else if (temSum < target)
+            {
+                left++;
+            }
             else
             {
-                res = {pair[left][1], pair[right][1]};
-                break;
+                return {numWithIndx[left][1], numWithIndx[right][1]};
             }
         }
-        return res;
+        throw;
     }
     vector<int> twoSum_hash(vector<int> &nums, int target)
     {
@@ -50,14 +48,14 @@ class Solution
         vector<int> res;
         for (int i = 0; i < nums.size(); i++)
         {
-            int complement = target - nums[i];
-            if (hash.find(complement) == hash.end())
+            int complement = target - nums[i];       // count the complementary number
+            if (hash.find(complement) == hash.end()) // if not visited yet
             {
-                hash[nums[i]] = i;
+                hash[nums[i]] = i; // ??? record the indx of the num?
             }
-            else
+            else // if we found the complement
             {
-                res = {i, hash[complement]};
+                res = {i, hash[complement]};//ok w
                 break;
             }
         }
